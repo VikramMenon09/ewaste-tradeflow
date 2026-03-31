@@ -1,0 +1,41 @@
+name: Deploy API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - ".github/workflows/deploy-api.yml"
+
+jobs:
+  deploy:
+    name: Deploy API to Railway
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy API service
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service api --detach
+        working-directory: api
+
+      - name: Deploy Puppeteer service
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service puppeteer --detach
+        working-directory: puppeteer
+
+      - name: Run database migrations
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_SYNC_URL: ${{ secrets.DATABASE_SYNC_URL }}
+        run: |
+          pip install alembic psycopg2-binary sqlalchemy
+          alembic upgrade head
+        working-directory: api

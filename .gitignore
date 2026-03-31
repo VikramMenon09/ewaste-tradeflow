@@ -1,0 +1,58 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.cover
+
+# Node / frontend
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# dbt
+data-pipeline/dbt/target/
+data-pipeline/dbt/dbt_packages/
+data-pipeline/dbt/logs/
+data-pipeline/dbt/.user.yml
+
+# Data files (raw data stays in S3, not git)
+data-pipeline/data/
+*.parquet
+*.csv.gz
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Alembic (generated migration files are committed, but not temp files)
+api/alembic/versions/__pycache__/
+
+# Puppeteer
+puppeteer/.local-chromium/

@@ -1,0 +1,5 @@
+income_classification,wb_label,prs_income_score,rationale
+high,High income,2,"Strong regulatory frameworks, formal recycling infrastructure, high labor standards. Low informal processing risk."
+upper_middle,Upper middle income,4,"Improving regulatory capacity but significant variation. Some documented informal processing sites. Moderate risk."
+lower_middle,Lower middle income,7,"Limited formal recycling capacity in most countries. Documented informal e-waste processing in several major importers (India, Philippines, Morocco). High risk."
+low,Low income,10,"Minimal formal recycling infrastructure. Highest rates of informal processing, open burning, and acid leaching. Severe health and environmental risk documented."

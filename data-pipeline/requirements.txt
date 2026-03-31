@@ -1,0 +1,40 @@
+# ── Data fetching ──────────────────────────────────────────────────────────────
+requests>=2.31.0
+urllib3>=2.0.0
+
+# ── Data processing ────────────────────────────────────────────────────────────
+pandas>=2.1.0
+numpy>=1.26.0
+openpyxl>=3.1.0          # UN Monitor Excel parsing
+pyarrow>=14.0.0          # Parquet read/write
+
+# ── Database ──────────────────────────────────────────────────────────────────
+psycopg2-binary>=2.9.9   # PostgreSQL driver (sync, for ingestion scripts)
+
+# ── Object storage ─────────────────────────────────────────────────────────────
+boto3>=1.34.0
+botocore>=1.34.0
+
+# ── dbt ───────────────────────────────────────────────────────────────────────
+dbt-core>=1.7.0
+dbt-postgres>=1.7.0
+
+# ── Data validation ────────────────────────────────────────────────────────────
+great-expectations>=0.18.0
+
+# ── Configuration ─────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# ── CLI ───────────────────────────────────────────────────────────────────────
+click>=8.1.0
+rich>=13.7.0              # Pretty terminal output for run status
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+structlog>=24.1.0
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest>=7.4.0
+pytest-cov>=4.1.0
+responses>=0.24.0         # Mock requests in tests

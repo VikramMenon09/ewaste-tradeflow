@@ -1,0 +1,86 @@
+name: ewaste_tradeflow
+version: "1.0.0"
+config-version: 2
+
+# dbt profile to use (defined in ~/.dbt/profiles.yml or data-pipeline/dbt/profiles.yml)
+profile: ewaste_tradeflow
+
+# File path configurations
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analyses"]
+docs-paths: ["docs"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Global model configurations
+models:
+  ewaste_tradeflow:
+    # Staging layer: views only — cheap to rebuild, close to raw source
+    staging:
+      +materialized: view
+      +schema: staging
+
+    # Intermediate layer: tables — more expensive joins, worth materializing
+    intermediate:
+      +materialized: table
+      +schema: intermediate
+
+    # Mart layer: final application tables and caches
+    marts:
+      +materialized: table
+      +schema: marts
+      # Choropleth and Sankey caches are materialized as tables (not views)
+      # because the API queries them directly and they must be fast
+      mart_choropleth_cache:
+        +materialized: table
+        +post-hook: "ANALYZE {{ this }}"
+      mart_sankey_cache:
+        +materialized: table
+        +post-hook: "ANALYZE {{ this }}"
+
+# Seed configurations
+seeds:
+  ewaste_tradeflow:
+    hs_to_ewaste_category:
+      +column_types:
+        hs_code: varchar
+        hs_description: varchar
+        un_category_code: integer
+        un_category_name: varchar
+        mapping_confidence: varchar
+        waste_fraction_scalar: float
+        notes: varchar
+    income_class_prs_weights:
+      +column_types:
+        income_classification: varchar
+        wb_label: varchar
+        prs_income_score: integer
+        rationale: varchar
+    literature_flags:
+      +column_types:
+        country_iso3: varchar
+        country_name: varchar
+        flag_level: varchar
+        prs_literature_score: integer
+        primary_citation: varchar
+        secondary_citations: varchar
+        notes: varchar
+        methodology_version: integer
+
+# Variable defaults (can be overridden at run time with --vars)
+vars:
+  # Minimum year for historical data
+  min_year: 2010
+  # Maximum year to include (set to current year in CI)
+  max_year: 2024
+  # PRS methodology version — bump this when scoring formula changes
+  prs_methodology_version: 1
+  # Confidence threshold below which trade flows are excluded from Sankey cache
+  min_volume_mt_for_sankey: 1.0
+  # Number of top routes to pre-compute for Sankey cache
+  sankey_top_n: 50

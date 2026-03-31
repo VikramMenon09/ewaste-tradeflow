@@ -1,11 +1,15 @@
 name: Deploy API
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "api/**"
-      - ".github/workflows/deploy-api.yml"
+  # Manual trigger only until Railway project and secrets are configured.
+  # To enable automatic deploys: add push trigger + set RAILWAY_TOKEN secret.
+  # Required secrets: RAILWAY_TOKEN, DATABASE_URL, DATABASE_SYNC_URL
+  workflow_dispatch:
+    inputs:
+      run_migrations:
+        description: "Run database migrations after deploy"
+        type: boolean
+        default: true
 
 jobs:
   deploy:

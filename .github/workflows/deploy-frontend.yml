@@ -1,11 +1,12 @@
 name: Deploy Frontend
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "frontend/**"
-      - ".github/workflows/deploy-frontend.yml"
+  # Manual trigger only until Vercel project and secrets are configured.
+  # To enable automatic deploys: add push trigger + set VERCEL_TOKEN secret.
+  # Required secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID,
+  #                   VITE_API_URL, VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID,
+  #                   VITE_AUTH0_AUDIENCE, VITE_MAPTILER_KEY
+  workflow_dispatch:
 
 jobs:
   deploy:

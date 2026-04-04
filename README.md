@@ -12,13 +12,16 @@ EWasteTradeFlow is an open-source analytics platform that aggregates e-waste dat
 
 | Feature | Description |
 |---|---|
-| **Interactive world map** | Choropleth showing e-waste generation, export intensity, or Processing Risk Score by country |
-| **Trade flow diagram** | Sankey diagram of the top 20 bilateral trade routes by estimated e-waste volume |
+| **Interactive world map** | Choropleth on CartoDB Positron basemap — 7 metrics: generation, per capita, collection rate, export intensity, net trade, compliance rate, PRS |
+| **Global stats strip** | Real-time computed global total/average, country coverage, % directly reported, highest-value country |
+| **Sortable data table** | All countries ranked by selected metric — confidence codes `[R]`/`[E]`/`[I]`, vintage year, searchable |
+| **Trade flow diagram** | Sankey diagram of top bilateral trade routes, colored by Basel compliance status |
 | **Basel compliance flags** | Highlights routes that violate (or likely violate) the Basel Convention Ban Amendment |
 | **Processing Risk Score (PRS)** | A 1–10 composite score per destination country based on formal recycling capacity, governance quality, income class, and literature evidence |
-| **Country profiles** | 10-year time series of generation, formal collection rate, top export/import partners |
+| **Country profiles** | 10-year generation trend chart, per capita rate, formal collection rate, PRS score bar, top export/import partners with Basel compliance colors |
 | **Report generation** | Downloadable PDF and CSV reports for researchers and advocates |
-| **Embeddable widgets** | Iframe-ready map for publishers, no login required |
+| **Embeddable widgets** | Iframe-ready map for publishers via signed embed tokens, no login required |
+| **Shareable links** | Filter state (metric, year, region, category) encoded in URL for citation and sharing |
 
 ---
 
@@ -139,10 +142,10 @@ npm run dev
 | Phase | Description | Status |
 |---|---|---|
 | Phase 0 | Monorepo scaffold, Comtrade ingestion, dbt skeleton | ✅ Complete |
-| Phase 1 | All API endpoints live, PRS scoring model | 🔄 In progress |
-| Phase 2 | Core frontend: map, Sankey, filters, URL state | Planned |
-| Phase 3 | PDF reports, embeddable widgets | Planned |
-| Phase 4 | Performance audit, accessibility, public launch | Planned |
+| Phase 1 | FastAPI backend — 8 routers, PRS scoring, Basel compliance, Redis caching | ✅ Complete |
+| Phase 2 | Core frontend — choropleth map, Sankey diagram, filters, country profiles, URL sharing, CSV export, Auth0, saved states | ✅ Complete |
+| Phase 3 | PDF reports (Puppeteer), report templates, embeddable widgets, methodology + data dictionary pages | ✅ Complete |
+| Phase 4 | Performance audit, accessibility (WCAG 2.1 AA), cross-browser QA, public launch | 🔄 In progress |
 
 ---
 

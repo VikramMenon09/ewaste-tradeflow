@@ -1,0 +1,135 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Raw tables populated by the ingestion pipeline. These tables are
+      loaded from Parquet files in S3 via COPY commands. Each table
+      corresponds to one ingestion source.
+    schema: public
+    freshness:
+      warn_after: {count: 10, period: day}
+      error_after: {count: 30, period: day}
+
+    tables:
+      - name: comtrade_raw
+        description: >
+          Raw UN Comtrade API v2 trade flow records. One row per bilateral
+          trade flow per HS code per year. Loaded by the comtrade ingestion source.
+        loaded_at_field: ingested_at
+        columns:
+          - name: period
+            description: Trade year (e.g. 2022)
+          - name: reporter_iso3
+            description: Reporting country ISO 3166-1 alpha-3
+          - name: partner_iso3
+            description: Partner country ISO 3166-1 alpha-3
+          - name: flow_code
+            description: "'X' = export, 'M' = import"
+          - name: hs_code
+            description: 4-digit HS code (e.g. '8548')
+          - name: volume_mt
+            description: Trade volume in metric tons
+          - name: trade_value_usd
+            description: Customs value in USD
+          - name: is_aggregate
+            description: True if this row is a regional aggregate (excluded in staging)
+          - name: source_id
+            description: FK to data_sources table
+          - name: ingested_at
+            description: Timestamp of ingestion
+
+      - name: oecd_flows_raw
+        description: >
+          Raw OECD ENV_WASTE_TRAN dataset records. Covers transboundary
+          hazardous waste shipments between OECD members. Loaded by the
+          oecd ingestion source.
+        loaded_at_field: ingested_at
+        columns:
+          - name: reporter_country
+            description: OECD country code for reporter
+          - name: partner_country
+            description: OECD country code for partner
+          - name: year
+            description: Reference year
+          - name: ewaste_category_code
+            description: UN e-waste category code (0–6)
+          - name: volume_mt
+            description: Waste volume in metric tons
+          - name: exporter_iso3
+            description: Exporter ISO3 (after normalization)
+          - name: importer_iso3
+            description: Importer ISO3 (after normalization)
+          - name: confidence_tier
+            description: Data confidence tier
+          - name: source_id
+            description: FK to data_sources table
+          - name: ingested_at
+            description: Timestamp of ingestion
+
+      - name: un_monitor_raw
+        description: >
+          Raw UN Global E-Waste Monitor data. Annual e-waste generation estimates
+          per country. Loaded by the un_monitor ingestion source.
+        loaded_at_field: ingested_at
+        columns:
+          - name: iso3
+            description: ISO 3166-1 alpha-3 country code
+          - name: country_name
+            description: Country name from UN Monitor
+          - name: year
+            description: Reference year
+          - name: total_mt
+            description: Total e-waste generated in metric tons
+          - name: per_capita_kg
+            description: Per-capita e-waste in kilograms
+          - name: formal_collection_rate
+            description: Fraction of e-waste formally collected/recycled (0.0–1.0)
+          - name: documentation_rate
+            description: Fraction of total with documented data (0.0–1.0)
+          - name: confidence_tier
+            description: "'reported' for directly measured values"
+          - name: ingested_at
+            description: Timestamp of ingestion
+
+      - name: wb_governance_raw
+        description: >
+          World Bank Governance Indicators — Rule of Law, Government Effectiveness,
+          and Control of Corruption. Annual estimates per country. Loaded by
+          the wb_governance ingestion source.
+        loaded_at_field: ingested_at
+        columns:
+          - name: country_iso3
+            description: ISO 3166-1 alpha-3 (converted from WBI ISO2)
+          - name: year
+            description: Reference year
+          - name: rule_of_law
+            description: "Rule of Law Estimate (RL.EST), range -2.5 to +2.5"
+          - name: gov_effectiveness
+            description: "Government Effectiveness Estimate (GE.EST), range -2.5 to +2.5"
+          - name: control_of_corruption
+            description: "Control of Corruption Estimate (CC.EST), range -2.5 to +2.5"
+          - name: data_completeness
+            description: Fraction of 3 indicators that are non-null (0.0–1.0)
+          - name: confidence_tier
+            description: "'reported'"
+          - name: ingested_at
+            description: Timestamp of ingestion
+
+      - name: basel_status_raw
+        description: >
+          Basel Convention party and Ban Amendment ratification status.
+          Static reference table updated manually from UNEP. One row per country.
+        columns:
+          - name: iso3
+            description: ISO 3166-1 alpha-3 country code
+          - name: country_name
+            description: Country name
+          - name: is_party
+            description: True if country has ratified the Basel Convention
+          - name: ban_amendment_ratified
+            description: True if the Basel Ban Amendment (waste export ban) is ratified
+          - name: ratification_year
+            description: Year the country ratified the Convention
+          - name: ban_ratification_year
+            description: Year the country ratified the Ban Amendment

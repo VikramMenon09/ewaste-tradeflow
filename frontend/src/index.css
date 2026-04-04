@@ -1,0 +1,45 @@
+/* MapLibre GL — must precede @tailwind */
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  /* Research palette tokens */
+  --c-bg:       #f7f5f0;   /* warm off-white, paper-like */
+  --c-surface:  #ffffff;
+  --c-raised:   #eeece8;
+  --c-border:   #d6d3ce;
+  --c-border-lt:#e8e5e0;
+  --c-text:     #1c1917;   /* stone-900 */
+  --c-text-2:   #57534e;   /* stone-600 */
+  --c-text-3:   #a8a29e;   /* stone-400 */
+  --c-accent:   #166534;   /* green-800 */
+  --c-accent-bg:#f0fdf4;   /* green-50 */
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-size: 13px;
+}
+
+/* Monospace for all numeric data output */
+.mono { font-family: ui-monospace, 'JetBrains Mono', 'Cascadia Code', monospace; }
+
+/* Thin, neutral scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-border) transparent;
+}
+
+/* MapLibre attribution — keep readable on light maps */
+.maplibregl-ctrl-attrib {
+  background: rgba(255,255,255,0.85) !important;
+  color: #57534e !important;
+  font-size: 9px !important;
+}

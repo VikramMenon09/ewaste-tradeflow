@@ -19,7 +19,7 @@ export type FilterState = {
   compliantOnly: boolean
   flaggedOnly: boolean
   topN: number
-  activeView: 'map' | 'sankey'
+  activeView: 'map' | 'sankey' | 'table'
 }
 
 // ─── API Response Types ───────────────────────────────────────────────────────

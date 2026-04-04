@@ -9,7 +9,7 @@ import type {
   FilterState,
 } from '@/shared/types'
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const BASE_URL = import.meta.env.VITE_API_URL || ''
 
 // ─── Error Type ──────────────────────────────────────────────────────────────
 
@@ -51,7 +51,8 @@ class ApiClient {
   }
 
   private buildUrl(path: string, params?: Record<string, unknown>): string {
-    const url = new URL(`${this.baseUrl}${path}`)
+    const base = this.baseUrl || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost')
+    const url = new URL(`${base}${path}`)
     if (params) {
       for (const [key, value] of Object.entries(params)) {
         if (value !== undefined && value !== null) {
@@ -167,4 +168,11 @@ export const api = {
 
   deleteSavedState: (id: string): Promise<void> =>
     client.delete(`/api/v1/saved-states/${encodeURIComponent(id)}`),
+
+  createEmbedToken: (data: {
+    label?: string
+    allowed_origins?: string[]
+    default_filters?: Record<string, unknown>
+  }): Promise<{ token: string; id: string }> =>
+    client.post<{ token: string; id: string }>('/api/v1/embed/tokens', data),
 }

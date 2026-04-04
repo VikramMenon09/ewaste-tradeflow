@@ -10,7 +10,7 @@ import * as d3 from 'd3'
 export function useD3<SVGEl extends SVGSVGElement | SVGGElement = SVGSVGElement>(
   renderFn: (selection: d3.Selection<SVGEl, unknown, null, undefined>) => void,
   deps: DependencyList,
-): RefObject<SVGEl | null> {
+): RefObject<SVGEl> {
   const ref = useRef<SVGEl>(null)
 
   useEffect(() => {

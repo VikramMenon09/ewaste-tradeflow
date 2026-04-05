@@ -3,11 +3,23 @@
  *
  * Field-level documentation for all API endpoints and response types.
  * Versioned alongside the platform; increment DATA_DICT_VERSION on each
- * annual data refresh.
+ * annual data refresh (see docs/data/annual-refresh-guide.md Step 4).
+ *
+ * Version history — add a new entry each annual refresh:
+ *   v1.0 (March 2026) — initial release, data years 2015–2022
  */
 
 const DATA_DICT_VERSION = '1.0'
 const LAST_UPDATED = 'March 2026'
+
+/** Changelog entries shown on the page. Newest first. */
+const CHANGELOG: Array<{ version: string; date: string; notes: string }> = [
+  {
+    version: '1.0',
+    date: 'March 2026',
+    notes: 'Initial release. Coverage: UN Comtrade, OECD ENV_WASTE_TRAN, World Bank WGI, UN GEM 2024. Data years 2015–2022.',
+  },
+]
 
 export default function DataDictionaryPage() {
   return (
@@ -177,7 +189,33 @@ export default function DataDictionaryPage() {
           </table>
         </DictSection>
 
-        <div className="mt-12 pt-6 border-t border-gray-800 text-xs text-gray-500">
+        <section className="mt-12 pt-6 border-t border-gray-800">
+          <h2 className="text-base font-semibold text-white mb-3">Version History</h2>
+          <table className="dict-table">
+            <thead>
+              <tr>
+                <th style={{ width: '12%' }}>Version</th>
+                <th style={{ width: '18%' }}>Date</th>
+                <th>Changes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CHANGELOG.map((entry) => (
+                <tr key={entry.version}>
+                  <td><code className="text-emerald-300 text-xs">v{entry.version}</code></td>
+                  <td className="text-gray-400">{entry.date}</td>
+                  <td className="text-gray-300">{entry.notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="text-xs text-gray-600 mt-3">
+            To update this dictionary after an annual data refresh, see{' '}
+            <code className="bg-gray-800 px-1 rounded">docs/data/annual-refresh-guide.md</code>.
+          </p>
+        </section>
+
+        <div className="mt-8 pt-4 border-t border-gray-800 text-xs text-gray-500">
           Data Dictionary v{DATA_DICT_VERSION} · Last updated {LAST_UPDATED} · EWasteTradeFlow
         </div>
       </div>

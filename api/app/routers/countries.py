@@ -14,7 +14,7 @@ import json
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import select, text
+from sqlalchemy import select, or_, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -64,6 +64,54 @@ async def list_countries(
 
     await cache_service.set(cache_key, [c.model_dump() for c in countries], ttl_seconds=_CACHE_TTL)
     return countries
+
+
+@router.get("/search", response_model=list[CountryBasic])
+async def search_countries(
+    q: str = Query(..., min_length=1, max_length=100, description="Search term matched against country name, ISO3, region, or subregion"),
+    limit: int = Query(20, ge=1, le=100, description="Maximum results to return"),
+    db: AsyncSession = Depends(get_db),
+) -> list[CountryBasic]:
+    """Full-text search across country name, ISO3 code, region, and subregion.
+
+    Results are ordered by relevance: exact ISO3 matches first, then name
+    prefix matches, then substring matches.
+    """
+    term = q.strip()
+    like_term = f"%{term}%"
+    upper_term = term.upper()
+
+    stmt = (
+        select(
+            Country.iso3,
+            Country.name,
+            Country.region,
+            Country.subregion,
+            Country.income_classification,
+            Country.basel_signatory,
+            Country.basel_ban_ratified,
+            Country.is_oecd_member,
+        )
+        .where(
+            or_(
+                Country.iso3.ilike(like_term),
+                Country.name.ilike(like_term),
+                Country.region.ilike(like_term),
+                Country.subregion.ilike(like_term),
+            )
+        )
+        # Exact ISO3 match first, then name prefix, then anything
+        .order_by(
+            (Country.iso3 == upper_term).desc(),
+            Country.name.ilike(f"{term}%").desc(),
+            Country.name,
+        )
+        .limit(limit)
+    )
+
+    result = await db.execute(stmt)
+    rows = result.mappings().all()
+    return [CountryBasic(**dict(row)) for row in rows]
 
 
 @router.get("/{iso3}", response_model=CountryBasic)

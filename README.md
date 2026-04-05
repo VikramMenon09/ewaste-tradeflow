@@ -13,15 +13,18 @@ EWasteTradeFlow is an open-source analytics platform that aggregates e-waste dat
 | Feature | Description |
 |---|---|
 | **Interactive world map** | Choropleth on CartoDB Positron basemap — 7 metrics: generation, per capita, collection rate, export intensity, net trade, compliance rate, PRS |
+| **Dark / light mode** | Toggle between themes; preference persists to `localStorage` and respects OS `prefers-color-scheme` |
 | **Global stats strip** | Real-time computed global total/average, country coverage, % directly reported, highest-value country |
 | **Sortable data table** | All countries ranked by selected metric — confidence codes `[R]`/`[E]`/`[I]`, vintage year, searchable |
 | **Trade flow diagram** | Sankey diagram of top bilateral trade routes, colored by Basel compliance status |
 | **Basel compliance flags** | Highlights routes that violate (or likely violate) the Basel Convention Ban Amendment |
 | **Processing Risk Score (PRS)** | A 1–10 composite score per destination country based on formal recycling capacity, governance quality, income class, and literature evidence |
 | **Country profiles** | 10-year generation trend chart, per capita rate, formal collection rate, PRS score bar, top export/import partners with Basel compliance colors |
+| **Country search** | `GET /api/v1/countries/search?q=` — fast search across name, ISO3, region, subregion |
 | **Report generation** | Downloadable PDF and CSV reports for researchers and advocates |
 | **Embeddable widgets** | Iframe-ready map for publishers via signed embed tokens, no login required |
 | **Shareable links** | Filter state (metric, year, region, category) encoded in URL for citation and sharing |
+| **Error boundaries** | Map, Sankey, data table, and country panel each wrapped independently — one failing component never crashes the whole app |
 
 ---
 
@@ -145,7 +148,20 @@ npm run dev
 | Phase 1 | FastAPI backend — 8 routers, PRS scoring, Basel compliance, Redis caching | ✅ Complete |
 | Phase 2 | Core frontend — choropleth map, Sankey diagram, filters, country profiles, URL sharing, CSV export, Auth0, saved states | ✅ Complete |
 | Phase 3 | PDF reports (Puppeteer), report templates, embeddable widgets, methodology + data dictionary pages | ✅ Complete |
-| Phase 4 | Performance audit, accessibility (WCAG 2.1 AA), cross-browser QA, public launch | 🔄 In progress |
+| Phase 4 | Dark mode, error boundaries, country search, axe-core a11y tests, annual refresh guide, data dictionary versioning | 🔄 In progress |
+
+### Phase 4 remaining
+- WCAG 2.1 AA full audit — map layers need non-color differentiators (patterns/ARIA labels)
+- Performance profiling — verify map load <3s, filter updates <2s via Lighthouse
+- Cross-browser QA — Safari/Firefox/Edge testing, MapLibre GL rendering consistency
+
+### Required secrets (before production deploy)
+| Secret | Purpose |
+|---|---|
+| `COMTRADE_API_KEY` | Trade flow data ingestion |
+| `AUTH0_DOMAIN` / `AUTH0_CLIENT_ID` / `AUTH0_CLIENT_SECRET` | Login + saved states |
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `S3_BUCKET` | PDF report uploads |
+| `RAILWAY_TOKEN` / `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` | CI/CD deployment |
 
 ---
 
@@ -156,6 +172,8 @@ See [`data-pipeline/README.md`](data-pipeline/README.md) for:
 - The HS code → UN e-waste category mapping methodology
 - dbt model layer descriptions
 - How to add a new data source
+
+For the annual data refresh process (ingestion → dbt → cache invalidation → version bump), see [`docs/data/annual-refresh-guide.md`](docs/data/annual-refresh-guide.md).
 
 ---
 

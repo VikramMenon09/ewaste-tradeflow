@@ -7,6 +7,7 @@ import MethodologyPage from './pages/MethodologyPage'
 import DataDictionaryPage from './pages/DataDictionaryPage'
 import { configureApiClient } from '@/lib/api-client'
 import { useUrlState } from '@/shared/hooks/useUrlState'
+import ErrorBoundary from '@/shared/components/ErrorBoundary'
 
 // Auth0 may not be configured — guard against missing context
 function useOptionalAuth0Token(): (() => Promise<string>) | null {
@@ -37,14 +38,16 @@ export default function App() {
   }, [getToken])
 
   return (
-    <Routes>
-      {/* Internal route rendered by Puppeteer for PDF generation — no app chrome */}
-      <Route path="/internal/report-view" element={<ReportViewPage />} />
-      {/* Documentation pages */}
-      <Route path="/methodology" element={<MethodologyPage />} />
-      <Route path="/data-dictionary" element={<DataDictionaryPage />} />
-      {/* All other routes go through the main interactive layout */}
-      <Route path="*" element={<MainApp />} />
-    </Routes>
+    <ErrorBoundary label="application">
+      <Routes>
+        {/* Internal route rendered by Puppeteer for PDF generation — no app chrome */}
+        <Route path="/internal/report-view" element={<ReportViewPage />} />
+        {/* Documentation pages */}
+        <Route path="/methodology" element={<MethodologyPage />} />
+        <Route path="/data-dictionary" element={<DataDictionaryPage />} />
+        {/* All other routes go through the main interactive layout */}
+        <Route path="*" element={<MainApp />} />
+      </Routes>
+    </ErrorBoundary>
   )
 }

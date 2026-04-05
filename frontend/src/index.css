@@ -20,6 +20,20 @@
   --c-accent-bg:#f0fdf4;   /* green-50 */
 }
 
+[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg:       #0c0a09;   /* stone-950 */
+  --c-surface:  #1c1917;   /* stone-900 */
+  --c-raised:   #292524;   /* stone-800 */
+  --c-border:   #44403c;   /* stone-700 */
+  --c-border-lt:#292524;   /* stone-800 */
+  --c-text:     #fafaf9;   /* stone-50 */
+  --c-text-2:   #d6d3d1;   /* stone-300 */
+  --c-text-3:   #78716c;   /* stone-500 */
+  --c-accent:   #4ade80;   /* green-400 */
+  --c-accent-bg:#052e16;   /* green-950 */
+}
+
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;

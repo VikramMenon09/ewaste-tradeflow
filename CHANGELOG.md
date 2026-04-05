@@ -8,12 +8,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased] — Phase 4 (In Progress)
 
+### Added
+- **Dark mode** — full dark palette via `[data-theme="dark"]` CSS custom properties; `useDarkMode` hook persists preference to `localStorage` and respects OS `prefers-color-scheme`; ☾/☀ toggle button in the header
+- **Error boundaries** — `ErrorBoundary` class component wraps the map, Sankey diagram, data table, country panel, and top-level app; failed sub-trees show a contained fallback with a "Try again" reset instead of crashing the whole page
+- **Country search endpoint** — `GET /api/v1/countries/search?q=&limit=` searches country name, ISO3 code, region, and subregion; returns results ordered by relevance (exact ISO3 match → name prefix → substring)
+- **axe-core accessibility tests** — `axe-core`, `@testing-library/react`, and `jsdom` added to frontend devDependencies; `ErrorBoundary.a11y.test.tsx` asserts no WCAG violations on the error fallback UI; CI runs a11y tests as a dedicated step after the unit test suite
+- **Annual data refresh guide** — `docs/data/annual-refresh-guide.md`: 6-step walkthrough covering ingestion, dbt run, cache invalidation, version bumping, verification, and troubleshooting
+- **Data dictionary version history** — `CHANGELOG` array in `DataDictionaryPage.tsx` renders a "Version History" table at the bottom of the page; pointer to `annual-refresh-guide.md` for future maintainers
+
 ### In Progress
-- WCAG 2.1 AA accessibility audit — color-coded map layers need non-color differentiators
-- Performance audit — map initial load target <3s, filter update target <2s
-- Cross-browser QA (Chrome, Firefox, Safari, Edge) — particularly MapLibre GL rendering
-- Annual data refresh documentation (run_ingestion.py workflow)
-- Data dictionary versioning (version tag on DataDictionaryPage)
+- WCAG 2.1 AA accessibility audit — color-coded map layers still need non-color differentiators (patterns/ARIA)
+- Performance audit — map initial load target <3s, filter update target <2s (not yet measured)
+- Cross-browser QA (Chrome, Firefox, Safari, Edge) — particularly MapLibre GL rendering on Safari
 
 ---
 

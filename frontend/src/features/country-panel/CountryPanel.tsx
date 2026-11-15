@@ -5,6 +5,7 @@ import GenerationChart from './GenerationChart'
 import Badge from '@/shared/components/Badge'
 import Spinner from '@/shared/components/Spinner'
 import EmptyState from '@/shared/components/EmptyState'
+import { IS_STATIC } from '@/lib/static-data'
 
 function fmt(value: number | null | undefined, decimals = 1): string {
   if (value === null || value === undefined) return '—'
@@ -178,7 +179,9 @@ export default function CountryPanel() {
                 </div>
                 <p style={{ ...S.label, textTransform: 'none', letterSpacing: 0, marginTop: 5, lineHeight: 1.4 }}>
                   Composite of governance, infrastructure, and informal sector indicators.
-                  Higher = greater risk of hazardous informal processing. PRS v{data.prs_methodology_version ?? 1}.
+                  Higher = greater risk of hazardous informal processing. PRS v{data.prs_methodology_version ?? 1}
+                  {data.prs_year ? ` (${data.prs_year})` : ''}.
+                  {IS_STATIC && ' Snapshot PRS omits Comtrade import volumes: capacity uses the formal collection rate only.'}
                 </p>
               </div>
             )}
@@ -305,11 +308,36 @@ export default function CountryPanel() {
               </div>
             )}
 
+            {IS_STATIC && data.generation_series.length === 0 && (
+              <p style={{ ...S.label, textTransform: 'none', letterSpacing: 0, lineHeight: 1.5 }}>
+                No plausible country-reported e-waste generation figures in the snapshot sources for this country.
+              </p>
+            )}
+
+            {IS_STATIC && (
+              <div style={S.card}>
+                <span style={S.label}>Trade Flows</span>
+                <p style={{ color: 'var(--c-text-3)', fontSize: '11px', margin: '2px 0 0', lineHeight: 1.45 }}>
+                  Top export/import partners need the full stack (UN Comtrade trade data).
+                </p>
+              </div>
+            )}
+
             {/* Source note */}
             <div style={{ ...S.divider, marginBottom: 0 }} />
             <p style={{ ...S.label, textTransform: 'none', letterSpacing: 0, lineHeight: 1.5, paddingBottom: 8 }}>
-              Sources: UN Global E-Waste Monitor, UN Comtrade, OECD Waste Statistics, World Bank Governance Indicators.
-              Click <em>Export PDF</em> to generate a full country report.
+              {IS_STATIC ? (
+                <>
+                  Sources: {data.generation_source ? `${data.generation_source} (generation), ` : ''}World Bank
+                  Governance Indicators and income classification, UN Treaty Collection (Basel status), project
+                  literature seed.
+                </>
+              ) : (
+                <>
+                  Sources: UN Global E-Waste Monitor, UN Comtrade, OECD Waste Statistics, World Bank Governance Indicators.
+                  Click <em>Export PDF</em> to generate a full country report.
+                </>
+              )}
             </p>
           </div>
         )}

@@ -12,6 +12,9 @@ import DownloadModal from '@/features/reports/DownloadModal'
 import EmbedButton from '@/features/embed/EmbedButton'
 import ErrorBoundary from '@/shared/components/ErrorBoundary'
 import { useDarkMode } from '@/shared/hooks/useDarkMode'
+import { IS_STATIC } from '@/lib/static-data'
+import SnapshotBanner from '@/features/static/SnapshotBanner'
+import FullStackNotice from '@/features/static/FullStackNotice'
 
 export default function Layout() {
   const activeView = useFilterStore((s) => s.activeView)
@@ -34,8 +37,8 @@ export default function Layout() {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <EmbedButton />
-          <ReportButton />
+          {!IS_STATIC && <EmbedButton />}
+          {!IS_STATIC && <ReportButton />}
           <AuthButton />
           <button
             onClick={toggleTheme}
@@ -52,6 +55,12 @@ export default function Layout() {
           </button>
         </div>
       </header>
+
+      {IS_STATIC && (
+        <div className="shrink-0">
+          <SnapshotBanner />
+        </div>
+      )}
 
       {/* ── Filter bar ─────────────────────────────────────────────────── */}
       <div className="shrink-0 z-10">
@@ -71,7 +80,7 @@ export default function Layout() {
             {activeView === 'map' && <ChoroplethMap />}
           </ErrorBoundary>
           <ErrorBoundary label="diagram">
-            {activeView === 'sankey' && <SankeyDiagram />}
+            {activeView === 'sankey' && (IS_STATIC ? <FullStackNotice feature="The trade flow (Sankey) diagram" /> : <SankeyDiagram />)}
           </ErrorBoundary>
           <ErrorBoundary label="table">
             {activeView === 'table' && <DataTable />}
@@ -102,7 +111,7 @@ export default function Layout() {
         <a href="/methodology" className="hover:underline" style={{ color: 'var(--c-text-2)' }}>Methodology</a>
         <a href="/data-dictionary" className="hover:underline" style={{ color: 'var(--c-text-2)' }}>Data Dictionary</a>
         <span className="ml-auto" style={{ fontFamily: 'ui-monospace, monospace', fontSize: '10px' }}>
-          UN Comtrade · OECD · GEM 2024
+          {IS_STATIC ? 'Static snapshot · OECD · UN SDG 12.4.2 · World Bank WGI · UN Treaty Collection' : 'UN Comtrade · OECD · GEM 2024'}
         </span>
       </footer>
     </div>

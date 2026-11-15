@@ -35,6 +35,8 @@ Every raw file written to S3 is immutable and timestamped. Transformations are a
 
 ---
 
+> **Endpoint changes:** the legacy `stats.oecd.org/SDMX-JSON` endpoint used by `ingestion/sources/oecd/` now returns 404, and the World Bank WGI codes `RL.EST`/`GE.EST`/`CC.EST` used by `ingestion/sources/wb_governance/` are archived; current data is under `source=3` as `GOV_WGI_RL.EST`, etc. `static_snapshot/build_snapshot.py` uses the working endpoints (OECD `sdmx.oecd.org` dataflow `DSD_EWASTE@DF_EWASTE`, World Bank source 3). See the root README's "Static snapshot mode" section.
+
 ## Running the pipeline
 
 ```bash

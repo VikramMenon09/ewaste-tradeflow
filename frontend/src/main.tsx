@@ -5,12 +5,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Auth0Provider } from '@auth0/auth0-react'
 import App from './app/App'
 import './index.css'
+import { StaticDataError } from './lib/static-data'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: 2,
+      // Snapshot misses (static-data mode) are permanent; don't retry them
+      retry: (failureCount, error) => !(error instanceof StaticDataError) && failureCount < 2,
     },
   },
 })

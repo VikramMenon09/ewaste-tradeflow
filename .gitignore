@@ -56,3 +56,6 @@ api/alembic/versions/__pycache__/
 
 # Puppeteer
 puppeteer/.local-chromium/
+
+# Static snapshot raw download cache
+.snapshot-cache/

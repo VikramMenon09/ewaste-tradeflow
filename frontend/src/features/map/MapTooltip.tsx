@@ -1,5 +1,6 @@
 import DataQualityBadge from '@/shared/components/DataQualityBadge'
 import type { ChoroplethCountry, ChoroplethMetric } from '@/shared/types'
+import { IS_STATIC } from '@/lib/static-data'
 
 interface MapTooltipProps {
   country: ChoroplethCountry
@@ -21,7 +22,7 @@ function formatValue(value: number | null, metric: ChoroplethMetric): string {
 }
 
 const METRIC_UNIT_HINT: Partial<Record<ChoroplethMetric, string>> = {
-  generation: 'metric tonnes · UN Global E-Waste Monitor',
+  generation: IS_STATIC ? 'metric tonnes · OECD / UN SDG 12.4.2' : 'metric tonnes · UN Global E-Waste Monitor',
   per_capita: 'kg per person per year',
   formal_collection: 'certified collection rate',
   exports: 'metric tonnes exported',

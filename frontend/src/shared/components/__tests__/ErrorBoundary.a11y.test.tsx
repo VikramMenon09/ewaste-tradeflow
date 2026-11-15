@@ -11,7 +11,6 @@ import { render } from '@testing-library/react'
 import axe from 'axe-core'
 
 // Component under test — the error fallback UI
-import ErrorBoundary from '../ErrorBoundary'
 
 async function checkA11y(container: HTMLElement) {
   const results = await axe.run(container)
@@ -28,13 +27,6 @@ async function checkA11y(container: HTMLElement) {
 
 describe('ErrorBoundary fallback accessibility', () => {
   it('renders an accessible error fallback with no axe violations', async () => {
-    // Render the fallback state directly (bypassing the class component boundary)
-    function FallbackWrapper() {
-      const boundary = new ErrorBoundary({ label: 'test component' })
-      // Manually call render logic with error state
-      return (boundary as unknown as { props: { children: never } }).props.children ?? null
-    }
-
     // Render the fallback UI directly
     const { container } = render(
       <div

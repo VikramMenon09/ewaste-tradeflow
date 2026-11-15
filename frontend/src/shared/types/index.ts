@@ -115,6 +115,17 @@ export type CountryProfile = {
   generation_series: GenerationPoint[]
   top_exports: ExportPartner[]
   top_imports: TradePartner[]
+  // Present in the static snapshot only
+  prs_year?: number | null
+  prs_components?: {
+    capacity_score: number | null
+    enforcement_score: number | null
+    income_score: number | null
+    literature_score: number | null
+    data_completeness: number | null
+  } | null
+  literature_flag_level?: string | null
+  generation_source?: string | null
 }
 
 export type ReportGenerateResponse = {

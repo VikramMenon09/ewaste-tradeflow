@@ -44,7 +44,7 @@ export default function MapLegend({ metric, min, max, hasData }: MapLegendProps)
       className="absolute bottom-8 left-3 z-10 rounded"
       style={{
         width: 210,
-        background: 'rgba(255,255,255,0.95)',
+        background: 'var(--c-surface)',
         border: '1px solid var(--c-border)',
         padding: '10px 12px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.10)',

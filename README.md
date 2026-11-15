@@ -68,6 +68,47 @@ See [`docs/architecture/`](docs/architecture/) for Architecture Decision Records
 
 ---
 
+## Static snapshot mode (no backend)
+
+The frontend can run as a plain static site, with no API, Postgres, Comtrade key, AWS or Auth0. In this mode it reads pre-built JSON from `frontend/public/static-data/` instead of calling `/api/v1`. The public demo uses this mode.
+
+```bash
+cd frontend
+npm install
+npm run dev:static      # local dev against the snapshot
+npm run build:static    # production build (VITE_STATIC_DATA=true) -> dist/
+```
+
+`frontend/vercel.json` builds with `build:static` and adds the SPA rewrite, so deploying the `frontend/` folder to Vercel needs no other settings.
+
+### What the snapshot contains
+
+| Metric / feature | In snapshot? | Source |
+|---|---|---|
+| Total generation, per capita, formal collection rate | Yes | OECD e-waste statistics (`DF_EWASTE`), else UN SDG 12.4.2 (custodian UNITAR), country-reported values only |
+| Processing Risk Score (PRS v1) | Yes, 206 countries | World Bank WGI + income class, `literature_flags` and `income_class_prs_weights` seeds, collection rate |
+| Basel party / Ban Amendment flags | Yes | UN Treaty Collection (XXVII-3, XXVII-3-a) |
+| Exports, imports, net trade, export intensity, compliance rate | No: disabled and labelled "needs full stack" | Need UN Comtrade bilateral trade data |
+| Sankey trade-flow diagram, country trade partners | No | Need UN Comtrade |
+| PDF reports, embeds, saved states | No | Need the API, AWS and Auth0 |
+
+Caveats, also shown in the app under **Details**:
+- Coverage is limited to the countries those keyless sources report (44 countries with generation data). Full Global E-waste Monitor coverage needs the manual UN Monitor download described below.
+- Gaps between observations are filled with the pipeline's own interpolation (`int_generation_filled`) and flagged `interpolated`.
+- Without Comtrade import volumes, the PRS capacity component uses the formal collection rate only. This is the same branch `int_prs_components` takes for a country with no imports.
+- Observations implying less than 0.2 or more than 40 kg per person, or from series whose source footnote states a partial scope (e.g. batteries only), are dropped. The excluded list is in `meta.json`.
+
+### Regenerating the snapshot
+
+```bash
+pip install pandas duckdb lxml requests
+python data-pipeline/static_snapshot/build_snapshot.py --out frontend/public/static-data
+```
+
+The script fetches every source live (no API keys), runs the dbt gap-filling and PRS SQL in DuckDB instead of Postgres, and writes JSON in the API's response shapes: `countries.json`, `choropleth/<metric>/<year>.json`, `country/<ISO3>.json`, plus `meta.json` with the snapshot date, sources and caveats. Raw downloads are cached in `.snapshot-cache/`; pass `--refresh` to re-download.
+
+---
+
 ## Quickstart (local development)
 
 ### Prerequisites

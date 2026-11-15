@@ -8,6 +8,8 @@ import type {
   UserSavedState,
   FilterState,
 } from '@/shared/types'
+import { IS_STATIC, STATIC_METRICS, fetchStatic, StaticDataError } from '@/lib/static-data'
+import type { ChoroplethMetric } from '@/shared/types'
 
 const BASE_URL = import.meta.env.VITE_API_URL || ''
 
@@ -127,7 +129,7 @@ export function configureApiClient(getAccessToken: () => Promise<string>): void 
 
 // ─── Typed API Methods ────────────────────────────────────────────────────────
 
-export const api = {
+const liveApi = {
   getCountries: (params?: { region?: string; income_class?: string }): Promise<CountryBasic[]> =>
     client.get<CountryBasic[]>('/api/v1/countries', params as Record<string, unknown>),
 
@@ -176,3 +178,32 @@ export const api = {
   }): Promise<{ token: string; id: string }> =>
     client.post<{ token: string; id: string }>('/api/v1/embed/tokens', data),
 }
+
+// ─── Static-data mode (VITE_STATIC_DATA=true) ────────────────────────────────
+// Serves the read-only endpoints from the pre-built JSON snapshot in
+// public/static-data. Everything that needs the backend, trade data, Auth0 or
+// AWS rejects with a 501 so the UI can label it "needs full stack".
+
+const needsFullStack = (what: string) => () =>
+  Promise.reject(new StaticDataError(501, `${what} needs the full stack (API + UN Comtrade data)`))
+
+const staticApi: typeof liveApi = {
+  ...liveApi,
+  getCountries: () => fetchStatic<CountryBasic[]>('countries.json'),
+  getChoropleth: (metric: string, year: number) =>
+    STATIC_METRICS.includes(metric as ChoroplethMetric)
+      ? fetchStatic<ChoroplethResponse>(`choropleth/${metric}/${year}.json`)
+      : needsFullStack(`The "${metric}" metric`)(),
+  getSankey: needsFullStack('The trade flow diagram'),
+  getCountryProfile: (iso3: string) =>
+    fetchStatic<CountryProfile>(`country/${encodeURIComponent(iso3.toUpperCase())}.json`),
+  generateReport: needsFullStack('PDF report generation'),
+  getReportStatus: needsFullStack('PDF report generation'),
+  exportCsv: needsFullStack('CSV export'),
+  getSavedStates: needsFullStack('Saved states'),
+  createSavedState: needsFullStack('Saved states'),
+  deleteSavedState: needsFullStack('Saved states'),
+  createEmbedToken: needsFullStack('Embed tokens'),
+}
+
+export const api = IS_STATIC ? staticApi : liveApi

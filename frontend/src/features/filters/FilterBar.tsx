@@ -1,6 +1,7 @@
 import { useFilterStore } from '@/shared/stores/filterStore'
 import { CATEGORY_LABELS, EWASTE_CATEGORIES, METRIC_LABELS, YEAR_RANGE, type ChoroplethMetric } from '@/shared/types'
 import ShareButton from './ShareButton'
+import { IS_STATIC, FULL_STACK_LABEL, isMetricAvailable } from '@/lib/static-data'
 
 const METRICS = Object.entries(METRIC_LABELS) as [ChoroplethMetric, string][]
 
@@ -79,14 +80,16 @@ export default function FilterBar() {
             }}
           >
             {METRICS.map(([key, label]) => (
-              <option key={key} value={key}>{label}</option>
+              <option key={key} value={key} disabled={!isMetricAvailable(key)}>
+                {isMetricAvailable(key) ? label : `${label} (${FULL_STACK_LABEL})`}
+              </option>
             ))}
           </select>
         </label>
       )}
 
-      {/* Category multi-select */}
-      <div className="flex items-center gap-1">
+      {/* Category multi-select (trade flows only — hidden in static mode) */}
+      {!IS_STATIC && <div className="flex items-center gap-1">
         <span style={{ color: 'var(--c-text-3)' }}>Category</span>
         <div className="flex gap-1">
           {EWASTE_CATEGORIES.slice(1).map((cat) => (
@@ -105,10 +108,10 @@ export default function FilterBar() {
             </button>
           ))}
         </div>
-      </div>
+      </div>}
 
       {/* Sankey top-N */}
-      {activeView === 'sankey' && (
+      {activeView === 'sankey' && !IS_STATIC && (
         <label className="flex items-center gap-2">
           <span style={{ color: 'var(--c-text-3)' }}>Top</span>
           <select
@@ -124,7 +127,8 @@ export default function FilterBar() {
         </label>
       )}
 
-      {/* Compliance toggles */}
+      {/* Compliance toggles (trade flows only — hidden in static mode) */}
+      {!IS_STATIC && <>
       <label className="flex items-center gap-1 cursor-pointer">
         <input
           type="checkbox"
@@ -144,6 +148,7 @@ export default function FilterBar() {
         />
         <span>Flagged only</span>
       </label>
+      </>}
 
       <div className="ml-auto">
         <ShareButton />

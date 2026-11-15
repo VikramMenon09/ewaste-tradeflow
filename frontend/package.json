@@ -7,7 +7,9 @@
     "build": "tsc && vite build",
     "build:embed": "tsc && vite build --config vite.embed.config.ts",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "build:static": "tsc && VITE_STATIC_DATA=true vite build",
+    "dev:static": "VITE_STATIC_DATA=true vite"
   },
   "dependencies": {
     "react": "^18.2.0",

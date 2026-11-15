@@ -10,6 +10,7 @@ import MapLegend from './MapLegend'
 import LayerToggle from './LayerToggle'
 import Spinner from '@/shared/components/Spinner'
 import type { ChoroplethCountry } from '@/shared/types'
+import { IS_STATIC, isMetricAvailable } from '@/lib/static-data'
 
 const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY as string | undefined
 // CartoDB Positron — light gray neutral basemap standard in academic research
@@ -186,7 +187,11 @@ export default function ChoroplethMap() {
       {isError && (
         <div className="absolute top-3 left-1/2 -translate-x-1/2 text-xs px-4 py-2 rounded shadow-lg z-10"
           style={{ background: '#fffbeb', border: '1px solid #d97706', color: '#92400e' }}>
-          No API data — connect the backend to see choropleth colors
+          {IS_STATIC
+            ? isMetricAvailable(metric)
+              ? 'No snapshot data for this metric and year'
+              : `${METRIC_LABELS[metric]} needs the full stack (UN Comtrade trade data)`
+            : 'No API data — connect the backend to see choropleth colors'}
         </div>
       )}
 

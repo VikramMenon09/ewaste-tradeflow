@@ -32,7 +32,7 @@ export default function DataDictionaryPage() {
       </header>
 
       <div className="max-w-4xl mx-auto px-6 py-10">
-        <h1 className="text-2xl font-bold text-white mb-2">Data Dictionary</h1>
+        <h1 className="text-2xl font-bold text-gray-100 mb-2">Data Dictionary</h1>
         <p className="text-sm text-gray-400 mb-2">
           Field definitions for all API response types. This dictionary is versioned and updated
           with each annual data refresh. Version <strong className="text-emerald-400">{DATA_DICT_VERSION}</strong> ·
@@ -190,7 +190,7 @@ export default function DataDictionaryPage() {
         </DictSection>
 
         <section className="mt-12 pt-6 border-t border-gray-800">
-          <h2 className="text-base font-semibold text-white mb-3">Version History</h2>
+          <h2 className="text-base font-semibold text-gray-100 mb-3">Version History</h2>
           <table className="dict-table">
             <thead>
               <tr>
@@ -226,16 +226,16 @@ export default function DataDictionaryPage() {
           border-collapse: collapse;
           font-size: 0.8rem;
         }
-        .dict-table thead tr { background: #1f2937; }
+        .dict-table thead tr { background: var(--c-raised); }
         .dict-table thead th {
           text-align: left; padding: 6px 10px;
-          color: #9ca3af; font-weight: 600;
-          border-bottom: 1px solid #374151;
+          color: var(--c-text-2); font-weight: 600;
+          border-bottom: 1px solid var(--c-border);
         }
-        .dict-table tbody tr:nth-child(even) { background: #111827; }
+        .dict-table tbody tr:nth-child(even) { background: var(--c-surface); }
         .dict-table tbody td {
-          padding: 6px 10px; color: #d1d5db;
-          border-bottom: 1px solid #1f2937; vertical-align: top;
+          padding: 6px 10px; color: var(--c-text-2);
+          border-bottom: 1px solid var(--c-raised); vertical-align: top;
         }
       `}</style>
     </div>
@@ -256,7 +256,7 @@ function DictSection({
   return (
     <section className="mb-10">
       <div className="flex flex-wrap items-baseline gap-3 mb-3 pb-1 border-b border-gray-800">
-        <h2 className="text-base font-semibold text-white">{title}</h2>
+        <h2 className="text-base font-semibold text-gray-100">{title}</h2>
         {endpoint && (
           <code className="text-xs text-emerald-400 bg-gray-900 px-2 py-0.5 rounded border border-gray-700">
             {endpoint}

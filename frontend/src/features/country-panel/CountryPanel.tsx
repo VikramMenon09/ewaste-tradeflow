@@ -256,7 +256,7 @@ export default function CountryPanel() {
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <span className="mono" style={{ fontSize: '11px', color: 'var(--c-text-2)' }}>{fmt(p.volume_mt)} MT</span>
-                          {p.prs_risk_flag && <span style={{ fontSize: '9px', color: '#991b1b' }}>⚠ PRS</span>}
+                          {p.prs_risk_flag && <span style={{ fontSize: '9px', color: '#991b1b' }}>PRS risk</span>}
                           {p.basel_compliant === false && <span style={{ fontSize: '9px', color: '#92400e' }}>Basel ✗</span>}
                         </div>
                       </div>
@@ -299,7 +299,7 @@ export default function CountryPanel() {
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <span className="mono" style={{ fontSize: '11px', color: 'var(--c-text-2)' }}>{fmt(p.volume_mt)} MT</span>
-                          {p.prs_risk_flag && <span style={{ fontSize: '9px', color: '#991b1b' }}>⚠ PRS</span>}
+                          {p.prs_risk_flag && <span style={{ fontSize: '9px', color: '#991b1b' }}>PRS risk</span>}
                         </div>
                       </div>
                     ))}

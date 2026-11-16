@@ -44,14 +44,23 @@ export default function Layout() {
             onClick={toggleTheme}
             title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="rounded px-2 py-1 text-xs transition-colors"
+            className="rounded px-2 py-1.5 text-xs transition-colors hover:border-gray-500"
             style={{
               background: 'transparent',
               border: '1px solid var(--c-border)',
               color: 'var(--c-text-2)',
             }}
           >
-            {isDark ? '☀' : '☾'}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              {isDark ? (
+                <>
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                </>
+              ) : (
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              )}
+            </svg>
           </button>
         </div>
       </header>
@@ -105,14 +114,16 @@ export default function Layout() {
 
       {/* ── Footer links ───────────────────────────────────────────────── */}
       <footer
-        className="shrink-0 flex items-center gap-4 px-4 py-1 text-xs"
+        className="shrink-0 flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-1.5 text-xs"
         style={{ background: 'var(--c-surface)', borderTop: '1px solid var(--c-border)', color: 'var(--c-text-3)' }}
       >
         <a href="/methodology" className="hover:underline" style={{ color: 'var(--c-text-2)' }}>Methodology</a>
         <a href="/data-dictionary" className="hover:underline" style={{ color: 'var(--c-text-2)' }}>Data Dictionary</a>
-        <span className="ml-auto" style={{ fontFamily: 'ui-monospace, monospace', fontSize: '10px' }}>
+        <a href="https://github.com/VikramMenon09/ewaste-tradeflow" target="_blank" rel="noreferrer" className="hover:underline" style={{ color: 'var(--c-text-2)' }}>Source</a>
+        <span className="ml-auto hidden md:block" style={{ fontFamily: 'ui-monospace, monospace', fontSize: '11px' }}>
           {IS_STATIC ? 'Static snapshot · OECD · UN SDG 12.4.2 · World Bank WGI · UN Treaty Collection' : 'UN Comtrade · OECD · GEM 2024'}
         </span>
+        <span className="ml-auto md:ml-0" style={{ fontSize: '11px' }}>© {new Date().getFullYear()} EWasteTradeFlow</span>
       </footer>
     </div>
   )

@@ -71,7 +71,7 @@ export default function EmbedButton() {
     <>
       <button
         onClick={handleOpen}
-        className="flex items-center gap-1.5 px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
+        className="flex items-center gap-1.5 px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-gray-100 hover:border-gray-500 transition-colors"
         title="Get embeddable iframe code for this view"
       >
         {/* Embed icon */}
@@ -87,15 +87,15 @@ export default function EmbedButton() {
           onClick={handleClose}
         >
           <div
-            className="relative bg-gray-900 border border-gray-700 rounded-lg shadow-2xl w-full max-w-lg mx-4 p-5"
+            className="relative bg-gray-900 border border-gray-700 rounded-lg shadow-lg w-full max-w-lg mx-4 p-5"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-white">Embed this view</h2>
+              <h2 className="text-sm font-semibold text-gray-100">Embed this view</h2>
               <button
                 onClick={handleClose}
-                className="text-gray-500 hover:text-white transition-colors"
+                className="text-gray-500 hover:text-gray-100 transition-colors"
                 aria-label="Close"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -140,7 +140,7 @@ export default function EmbedButton() {
                   </button>
                   <button
                     onClick={handleClose}
-                    className="px-3 py-1.5 text-xs rounded border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
+                    className="px-3 py-1.5 text-xs rounded border border-gray-700 text-gray-400 hover:text-gray-100 hover:border-gray-500 transition-colors"
                   >
                     Done
                   </button>

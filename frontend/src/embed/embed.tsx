@@ -75,7 +75,7 @@ function EmbedApp() {
       >
         Data: UN Comtrade · OECD · UN Global E-Waste Monitor ·{' '}
         <a
-          href="https://github.com/your-org/ewaste-tradeflow"
+          href="https://github.com/VikramMenon09/ewaste-tradeflow"
           target="_blank"
           rel="noreferrer"
           className="text-emerald-700 hover:text-emerald-500"

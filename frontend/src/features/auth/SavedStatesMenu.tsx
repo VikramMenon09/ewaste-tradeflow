@@ -63,7 +63,7 @@ export default function SavedStatesMenu() {
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
+        className="px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-gray-100 hover:border-gray-500 transition-colors"
       >
         Saved views
       </button>
@@ -80,7 +80,7 @@ export default function SavedStatesMenu() {
                 onChange={(e) => setSaveName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSave()}
                 placeholder="View name…"
-                className="flex-1 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white placeholder-gray-600 text-xs"
+                className="flex-1 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-gray-100 placeholder-gray-600 text-xs"
               />
               <button
                 onClick={handleSave}
@@ -109,7 +109,7 @@ export default function SavedStatesMenu() {
               >
                 <button
                   onClick={() => handleLoad(s)}
-                  className="flex-1 text-left text-gray-300 hover:text-white truncate"
+                  className="flex-1 text-left text-gray-300 hover:text-gray-100 truncate"
                 >
                   {s.name}
                 </button>

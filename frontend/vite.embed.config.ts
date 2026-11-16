@@ -12,7 +12,7 @@ export default defineConfig({
   build: {
     outDir: 'dist/embed',
     lib: {
-      entry: path.resolve(__dirname, 'src/embed/main.tsx'),
+      entry: path.resolve(__dirname, 'src/embed/embed.tsx'),
       name: 'EWasteEmbed',
       fileName: 'ewaste-embed',
       formats: ['iife'],

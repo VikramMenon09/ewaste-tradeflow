@@ -31,8 +31,8 @@ export default function DownloadModal() {
       />
 
       {/* Modal */}
-      <div className="relative bg-gray-900 border border-gray-700 rounded-lg shadow-2xl w-full max-w-sm p-5 text-sm">
-        <h2 className="font-semibold text-white mb-4">
+      <div className="relative bg-gray-900 border border-gray-700 rounded-lg shadow-lg w-full max-w-sm p-5 text-sm">
+        <h2 className="font-semibold text-gray-100 mb-4">
           {reportStatus === 'complete'
             ? 'Report Ready'
             : reportStatus === 'failed'
@@ -89,7 +89,7 @@ export default function DownloadModal() {
           {isFinished && (
             <button
               onClick={clearReport}
-              className="px-4 py-1.5 text-xs rounded border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
+              className="px-4 py-1.5 text-xs rounded border border-gray-700 text-gray-400 hover:text-gray-100 hover:border-gray-500 transition-colors"
             >
               Dismiss
             </button>

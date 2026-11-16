@@ -22,7 +22,7 @@ export default function AuthButton() {
     return (
       <button
         onClick={() => loginWithRedirect()}
-        className="px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
+        className="px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-gray-100 hover:border-gray-500 transition-colors"
       >
         Sign in
       </button>
@@ -34,7 +34,7 @@ export default function AuthButton() {
       <span className="text-xs text-gray-400 hidden sm:block">{user?.email}</span>
       <button
         onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-        className="px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
+        className="px-3 py-1 text-xs rounded border border-gray-700 text-gray-400 hover:text-gray-100 hover:border-gray-500 transition-colors"
       >
         Sign out
       </button>
